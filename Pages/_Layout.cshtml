@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MyAspNetCoreApp</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container">
+        <div class="header d-flex justify-content-between align-items-center px-4">
+            <div class="d-flex align-items-center">
+                <a href="/Index">
+                    <img src="./image/logo.png" alt="Logo" class="me-2">
+                </a>
+                <span class="logo">CARRER GUIDE</span>
+            </div>
+            <div>
+                <a href="#" class="btn btn-outline-primary me-2">LOGIN IN</a>
+                <a href="#" class="btn btn-primary">SIGN UP</a>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="text-center">
+            </div>
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Footer Section -->
+    <section class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="./image/footerhome.jpg" alt="The Careers Handbook" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <h2 class="footer-title">LIÊN HỆ</h2>
+                    <h3 class="footer-subtitle">CARRER GUIDE</h3>
+                    <p class="footer-text">Khám phá đam mê, định hướng tương lai - Hành trình sự nghiệp bắt đầu từ đây!</p>
+                    <p class="footer-text">CARRER GUIDE là nền tảng hỗ trợ sinh viên trong việc tìm kiếm và phát triển sự nghiệp.</p>
+                    <p class="footer-text">Chúng tôi cung cấp các công cụ và tài nguyên để giúp bạn khám phá đam mê và định hướng tương lai.</p>
+                    <p class="footer-text">Hãy tham gia cùng chúng tôi để bắt đầu hành trình sự nghiệp của bạn!</p>
+                    <p class="footer-text">Để biết thêm thông tin, vui lòng liên hệ với chúng tôi qua số điện thoại hoặc email bên dưới.</p>
+                    <p class="footer-text">Chúng tôi rất mong được hỗ trợ bạn trong hành trình sự nghiệp của mình!</p>
+                    <a href="#" class="btn btn-light rounded-pill px-4">HOME NOW</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Bar -->
+    <div class="container mb-4">
+        <div class="contact-bar d-flex justify-content-between align-items-center">
+            <a href="tel:199122160" class="contact-item">
+                <i class="fas fa-phone-alt me-2"></i>
+                199122160
+            </a>
+            <a href="mailto:carrerguide123@gmail.com" class="contact-item">
+                <i class="fas fa-envelope me-2"></i>
+                carrerguide123@gmail.com
+            </a>
+            <a href="#" class="contact-item">
+                <i class="fab fa-facebook-square me-2"></i>
+                carrerguide
+            </a>
+        </div>
+    </div>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/script.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

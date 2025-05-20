@@ -1,0 +1,991 @@
+/* Combined styles from Home.css, School Recommendations.css, and MBTI Assessment.css */
+
+/* Home.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f6f8fc;
+}
+.hero-section {
+    background: none !important;
+    color: #ffffff;
+    padding: 80px 0 60px 0;
+    border-radius: 16px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 32px rgba(94,80,249,0.10);
+    position: relative;
+    overflow: hidden;
+}
+.hero-text {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+}
+.hero-text-top {
+    font-size: 4rem;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.1;
+}
+.hero-text-bottom {
+    font-size: 4rem;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.1;
+}
+.hero-bubbles {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    z-index: 1;
+}
+.hero-section .hero-image {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+}
+.logo {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: #5e50f9;
+    margin-left: 8px;
+}
+.header {
+    background: #fff;
+    padding: 18px 32px;
+    border-radius: 50px;
+    margin: 20px auto 30px auto;
+    box-shadow: 0 6px 24px rgba(94,80,249,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header img {
+    width: 56px;
+    height: auto;
+    border-radius: 12px;
+}
+.btn-outline-primary, .btn-primary {
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 8px 24px;
+    font-size: 1.1rem;
+}
+.btn-outline-primary {
+    border-color: #5e50f9;
+    color: #5e50f9;
+}
+.btn-outline-primary:hover, .btn-primary:hover {
+    background: #4a3ef7;
+    color: #fff;
+}
+.btn-primary {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    border: none;
+}
+.features-section {
+    background: #e8f0fe;
+    padding: 60px 0 40px 0;
+    border-radius: 16px;
+    margin-bottom: 40px;
+}
+.feature-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(94,80,249,0.07);
+    padding: 32px 18px;
+    margin: 18px 0;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+.feature-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(94,80,249,0.13);
+}
+.feature-icon {
+    font-size: 2.7rem;
+    color: #5e50f9;
+    margin-bottom: 18px;
+}
+.feature-title {
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+.feature-text {
+    color: #555;
+    font-size: 1rem;
+}
+.benefits-section {
+    padding: 70px 0 40px 0;
+}
+.benefits-title {
+    font-weight: 800;
+    color: #0a2540;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+}
+.benefit-item {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+.benefit-check {
+    color: #5e50f9;
+    margin-right: 10px;
+}
+.benefits-section img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    border-radius: 20px;
+}
+.footer-section {
+    background: #1a0f5f;
+    color: #fff;
+    padding: 60px 0 30px 0;
+    border-radius: 24px 24px 0 0;
+    margin-top: 60px;
+}
+.footer-title {
+    font-size: 2.7rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+.footer-subtitle {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+.footer-text {
+    margin-bottom: 18px;
+    font-size: 1.05rem;
+}
+.footer-section img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin: 0 auto 18px auto;
+    display: block;
+    border-radius: 18px;
+}
+.contact-bar {
+    background: #fff;
+    border-radius: 50px;
+    padding: 12px 32px;
+    margin-top: 24px;
+    box-shadow: 0 2px 12px rgba(94,80,249,0.07);
+}
+.contact-item {
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+.contact-item:hover {
+    color: #5e50f9;
+}
+.position-relative {
+    z-index: 2;
+}
+.logo-large {
+    font-size: 2.5rem;
+}
+.img-fluid {
+    border-radius: 15px;
+    max-width: 100%;
+    height: auto;
+}
+
+/* School Recommendations.css */
+.recommendations-section {
+    background: #e8f0fe;
+    padding: 48px 0 32px 0;
+    border-radius: 16px;
+    margin-bottom: 32px;
+}
+.recommendations-title {
+    font-size: 2.3rem;
+    font-weight: 800;
+    color: #0a2540;
+    margin-bottom: 18px;
+}
+.recommendations-text {
+    font-size: 1.15rem;
+    color: #333;
+    margin-bottom: 28px;
+}
+.btn-filters {
+    background: #fff;
+    color: #5e50f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 28px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(94,80,249,0.06);
+    transition: background 0.2s, color 0.2s;
+}
+.btn-filters i {
+    margin-right: 10px;
+}
+.btn-filters:hover {
+    background: #5e50f9;
+    color: #fff;
+}
+.school-list {
+    background: #1a0f5f;
+    padding: 32px 0;
+    border-radius: 18px;
+    margin-bottom: 32px;
+}
+.school-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(94,80,249,0.07);
+    padding: 18px 18px 18px 32px;
+    margin: 18px 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.school-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 32px rgba(94,80,249,0.13);
+}
+.school-image {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-right: 24px;
+    box-shadow: 0 2px 8px rgba(94,80,249,0.08);
+}
+.school-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.school-type {
+    font-size: 0.95rem;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+.school-score {
+    background: #e8f0fe;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    position: absolute;
+    left: 170px;
+    bottom: 18px;
+    color: #1a0f5f;
+    font-size: 1.1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.school-ranking-row {
+    display: flex;
+    border-bottom: 1px solid #eee;
+}
+.school-ranking-name {
+    flex: 1;
+    padding: 15px;
+    text-align: right;
+    font-weight: 500;
+    color: #333;
+}
+.school-ranking-score {
+    width: 40%;
+    background-color: #7dd3fc;
+    padding: 15px;
+    text-align: right;
+    font-weight: 700;
+    color: #333;
+}
+
+/* MBTI Assessment.css */
+.assessment-header {
+    background-color: #1a0f5f;
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+.assessment-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+.assessment-subtitle {
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.progress-indicator {
+    background-color: white;
+    color: #333;
+    font-weight: 600;
+    font-size: 1.2rem;
+    padding: 8px 30px;
+    border-radius: 50px;
+    display: inline-block;
+    margin-top: 20px;
+}
+.career-path-section {
+    background-color: #e8f0fe;
+    padding: 50px 0;
+}
+.career-path-section img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 15px;
+    margin: 0 auto;
+    display: block;
+}
+.career-path-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #0a2540;
+    margin-bottom: 20px;
+}
+.career-path-text {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+.btn-take-assessment {
+    background-color: #0a2540;
+    color: white;
+    border-radius: 5px;
+    padding: 12px 25px;
+    font-weight: 600;
+    border: none;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+.question-section {
+    background-color: #1a0f5f;
+    color: white;
+    padding: 50px 20px;
+    text-align: center;
+}
+.question-section img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 10px;
+    margin: 0 auto;
+    display: block;
+}
+.question-text {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+.answer-btn {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 50px;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    margin: 10px;
+    width: 100%;
+    transition: all 0.3s;
+}
+.answer-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.btn-confirm {
+    background-color: white;
+    color: #1a0f5f;
+    border-radius: 50px;
+    padding: 12px 40px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 30px;
+    border: none;
+}
+
+/* --- UI Enhancement for all pages --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f6f8fc;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* Header */
+.header {
+    background: #fff;
+    padding: 18px 32px;
+    border-radius: 50px;
+    margin: 20px auto 30px auto;
+    box-shadow: 0 6px 24px rgba(94,80,249,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header img {
+    width: 56px;
+    border-radius: 12px;
+}
+.logo {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: #5e50f9;
+    margin-left: 8px;
+}
+.btn-outline-primary, .btn-primary {
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 8px 24px;
+    font-size: 1.1rem;
+}
+.btn-primary {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    border: none;
+}
+.btn-outline-primary:hover, .btn-primary:hover {
+    background: #4a3ef7;
+    color: #fff;
+}
+
+/* Hero Section */
+.hero-section {
+    background: none !important;
+    color: #fff;
+    padding: 80px 0 60px 0;
+    border-radius: 16px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 32px rgba(94,80,249,0.10);
+}
+.hero-text {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+}
+.hero-text-top {
+    font-size: 4rem;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.1;
+}
+.hero-text-bottom {
+    font-size: 4rem;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.1;
+}
+.hero-section .hero-image {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+}
+.btn.btn-light.btn-lg {
+    background: #fff;
+    color: #1a0f5f;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 16px 36px;
+    box-shadow: 0 2px 12px rgba(94,80,249,0.08);
+    transition: background 0.2s, color 0.2s;
+}
+.btn.btn-light.btn-lg:hover {
+    background: #e8f0fe;
+    color: #5e50f9;
+}
+
+/* Features Section */
+.features-section {
+    background: #e8f0fe;
+    padding: 60px 0 40px 0;
+    border-radius: 16px;
+    margin-bottom: 40px;
+}
+.feature-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(94,80,249,0.07);
+    padding: 32px 18px;
+    margin: 18px 0;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.feature-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(94,80,249,0.13);
+}
+.feature-icon {
+    font-size: 2.7rem;
+    color: #5e50f9;
+    margin-bottom: 18px;
+}
+.feature-title {
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+.feature-text {
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Benefits Section */
+.benefits-section {
+    padding: 70px 0 40px 0;
+}
+.benefits-title {
+    font-weight: 800;
+    color: #0a2540;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+}
+.benefit-item {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+.benefit-check {
+    color: #5e50f9;
+    margin-right: 10px;
+}
+
+/* Footer Section */
+.footer-section {
+    background: #1a0f5f;
+    color: #fff;
+    padding: 60px 0 30px 0;
+    border-radius: 24px 24px 0 0;
+    margin-top: 60px;
+}
+.footer-title {
+    font-size: 2.7rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+.footer-subtitle {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+.footer-text {
+    margin-bottom: 18px;
+    font-size: 1.05rem;
+}
+.footer-section img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 18px;
+    margin: 0 auto 18px auto;
+    display: block;
+}
+
+/* Contact Bar */
+.contact-bar {
+    background: #fff;
+    border-radius: 50px;
+    padding: 12px 32px;
+    margin-top: 24px;
+    box-shadow: 0 2px 12px rgba(94,80,249,0.07);
+    font-size: 1.1rem;
+}
+.contact-item {
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+.contact-item:hover {
+    color: #5e50f9;
+}
+
+/* School Recommendations */
+.recommendations-section {
+    background: #e8f0fe;
+    padding: 48px 0 32px 0;
+    border-radius: 16px;
+    margin-bottom: 32px;
+}
+.recommendations-title {
+    font-size: 2.3rem;
+    font-weight: 800;
+    color: #0a2540;
+    margin-bottom: 18px;
+}
+.recommendations-text {
+    font-size: 1.15rem;
+    color: #333;
+    margin-bottom: 28px;
+}
+.btn-filters {
+    background: #fff;
+    color: #5e50f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 28px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(94,80,249,0.06);
+    transition: background 0.2s, color 0.2s;
+}
+.btn-filters:hover {
+    background: #5e50f9;
+    color: #fff;
+}
+.school-list {
+    background: #1a0f5f;
+    padding: 32px 0;
+    border-radius: 18px;
+    margin-bottom: 32px;
+}
+.school-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(94,80,249,0.07);
+    padding: 18px 18px 18px 32px;
+    margin: 18px 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.school-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 32px rgba(94,80,249,0.13);
+}
+.school-image {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-right: 24px;
+    box-shadow: 0 2px 8px rgba(94,80,249,0.08);
+}
+.school-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.school-type {
+    font-size: 0.95rem;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+.school-score {
+    background: #e8f0fe;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    position: absolute;
+    left: 170px;
+    bottom: 18px;
+    color: #1a0f5f;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(94,80,249,0.08);
+}
+.btn-see {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 32px;
+    font-weight: 700;
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(94,80,249,0.08);
+}
+.btn-see:hover {
+    background: #4a3ef7;
+}
+.arrow-marker {
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #5e50f9;
+    font-size: 1.5rem;
+}
+.btn-more {
+    background: #fff;
+    color: #1a0f5f;
+    border-radius: 50px;
+    padding: 10px 36px;
+    font-weight: 700;
+    margin: 24px auto 0 auto;
+    display: block;
+    box-shadow: 0 2px 8px rgba(94,80,249,0.08);
+    transition: background 0.2s, color 0.2s;
+}
+.btn-more:hover {
+    background: #5e50f9;
+    color: #fff;
+}
+.top-schools-section {
+    background: #1a0f5f;
+    color: #fff;
+    padding: 36px 0;
+    border-radius: 18px;
+    margin-bottom: 32px;
+}
+.top-schools-title {
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.school-ranking-table {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(94,80,249,0.10);
+}
+.school-ranking-row {
+    display: flex;
+    border-bottom: 1px solid #eee;
+}
+.school-ranking-name {
+    flex: 1;
+    padding: 18px;
+    text-align: right;
+    font-weight: 600;
+    color: #333;
+}
+.school-ranking-score {
+    width: 40%;
+    background: #7dd3fc;
+    padding: 18px;
+    text-align: right;
+    font-weight: 800;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+/* MBTI Assessment */
+.assessment-header {
+    background: #1a0f5f;
+    color: #fff;
+    padding: 40px 20px 30px 20px;
+    text-align: center;
+    border-radius: 16px;
+    margin-bottom: 32px;
+}
+.assessment-title {
+    font-size: 2.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+.assessment-subtitle {
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.progress-indicator {
+    background: #fff;
+    color: #1a0f5f;
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 10px 36px;
+    border-radius: 50px;
+    display: inline-block;
+    margin-top: 24px;
+    box-shadow: 0 2px 8px rgba(94,80,249,0.08);
+}
+.career-path-section {
+    background: #e8f0fe;
+    padding: 60px 0 40px 0;
+    border-radius: 16px;
+    margin-bottom: 32px;
+}
+.career-path-section img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    border-radius: 15px;
+    margin: 0 auto;
+    display: block;
+    box-shadow: 0 2px 8px rgba(94,80,249,0.08);
+}
+.career-path-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0a2540;
+    margin-bottom: 18px;
+}
+.career-path-text {
+    font-size: 1.15rem;
+    color: #333;
+    margin-bottom: 28px;
+}
+.btn-take-assessment {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    color: #fff;
+    border-radius: 8px;
+    padding: 14px 36px;
+    font-weight: 700;
+    border: none;
+    font-size: 1.15rem;
+    box-shadow: 0 2px 8px rgba(94,80,249,0.08);
+    transition: background 0.2s;
+    text-decoration: none;
+}
+.btn-take-assessment:hover {
+    background: #4a3ef7;
+}
+.question-section {
+    background: #1a0f5f;
+    color: #fff;
+    padding: 60px 20px 40px 20px;
+    text-align: center;
+    border-radius: 16px;
+    margin-bottom: 32px;
+}
+.question-section img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 10px;
+    margin: 0 auto;
+    display: block;
+}
+.question-text {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+.answer-btn {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 50px;
+    padding: 14px 36px;
+    font-size: 1.15rem;
+    margin: 12px;
+    width: 100%;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+.answer-btn:hover {
+    background: #fff;
+    color: #5e50f9;
+    border: 2px solid #5e50f9;
+}
+.btn-confirm {
+    background: #fff;
+    color: #1a0f5f;
+    border-radius: 50px;
+    padding: 14px 48px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-top: 36px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(94,80,249,0.08);
+    transition: background 0.2s, color 0.2s;
+}
+.btn-confirm:hover {
+    background: #5e50f9;
+    color: #fff;
+}
+
+/* Chỉ áp dụng cho hình ảnh hero-image trong trang school-recommendations */
+.school-recommendations-hero .hero-image {
+    display: block;
+    margin: 0 auto;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: 16px;
+    background: none;
+    box-shadow: none;
+}
+
+/* Đảm bảo không ảnh hưởng đến trang Home */
+.school-recommendations-hero {
+    background: none !important;
+    padding: 40px 0 24px 0;
+    border-radius: 16px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 32px rgba(94,80,249,0.10);
+    position: relative;
+    overflow: hidden;
+    min-height: unset;
+}
+
+/* Chỉ áp dụng cho hero-section của trang chủ (index) */
+.index-hero-section {
+    background: #3d5785 !important;
+    color: #ffffff;
+}
+
+.index-hero-section .hero-text {
+    color: #ffffff;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 991px) {
+    .hero-text {
+        font-size: 2.5rem;
+    }
+    .feature-card, .school-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .school-image {
+        margin-bottom: 12px;
+        margin-right: 0;
+    }
+}
+@media (max-width: 767px) {
+    .container {
+        padding: 0 8px;
+    }
+    .header {
+        flex-direction: column;
+        padding: 12px 0;
+    }
+    .footer-section {
+        padding: 32px 0 16px 0;
+    }
+    .hero-section {
+        padding: 40px 0 24px 0;
+    }
+    .features-section, .benefits-section, .career-path-section, .recommendations-section, .school-list, .top-schools-section, .assessment-header, .question-section {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    .school-card {
+        padding: 12px 8px;
+    }
+    .btn-see, .btn-more, .btn-take-assessment, .btn-confirm {
+        padding: 10px 18px;
+        font-size: 1rem;
+    }
+}
+@media (max-width: 768px) {
+    .hero-text-top, .hero-text-bottom {
+        font-size: 2.2rem;
+    }
+}

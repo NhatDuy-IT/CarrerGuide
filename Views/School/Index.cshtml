@@ -1,0 +1,296 @@
+@model List<SchoolDto>
+@{
+    ViewData["Title"] = "Trường học";
+}
+
+<style>
+    .school-card {
+        transition: all 0.3s ease;
+    }
+
+    .school-card.filtered-out {
+        opacity: 0.3;
+        transform: scale(0.95);
+    }
+
+    .filter-active {
+        border: 2px solid #0d6efd !important;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .location-highlight {
+        background-color: #fff3cd;
+        padding: 2px 4px;
+        border-radius: 3px;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-4">
+                <i class="bi bi-building"></i> Danh sách trường học
+            </h1>
+            <p class="text-center text-muted mb-5">Khám phá các trường đại học hàng đầu Việt Nam</p>
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Tìm kiếm trường học..." id="searchInput">
+                <button class="btn btn-outline-primary" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="typeFilter">
+                <option value="">Tất cả loại hình</option>
+                <option value="Công lập">Công lập</option>
+                <option value="Tư thục">Tư thục</option>
+                <option value="Dân lập">Dân lập</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="locationFilter">
+                <option value="">Tất cả địa điểm</option>
+                <!-- Options will be populated by JavaScript -->
+            </select>
+        </div>
+    </div>
+
+    <!-- Schools Grid -->
+    <div class="row" id="schoolsContainer">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var school in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4 school-card"
+                     data-type="@(school.Type ?? "")"
+                     data-location="@(school.Location ?? "")">
+                    <div class="card h-100 shadow-sm">
+                        @if (!string.IsNullOrEmpty(school.ImageUrl))
+                        {
+                            <img src="@school.ImageUrl" class="card-img-top" alt="@school.Name" 
+                                 style="height: 200px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                                 style="height: 200px;">
+                                <i class="bi bi-building display-4 text-muted"></i>
+                            </div>
+                        }
+                        
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@school.Name</h5>
+                            
+                            @if (!string.IsNullOrEmpty(school.Description))
+                            {
+                                <p class="card-text text-muted small">
+                                    @(school.Description.Length > 100 ? school.Description.Substring(0, 100) + "..." : school.Description)
+                                </p>
+                            }
+                            
+                            <div class="mt-auto">
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <small class="text-muted">
+                                            <i class="bi bi-geo-alt"></i> @(school.Location ?? "Chưa cập nhật")
+                                        </small>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        @if (!string.IsNullOrEmpty(school.Type))
+                                        {
+                                            <span class="badge bg-@(school.Type == "Công lập" ? "success" : "info")">
+                                                @school.Type
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                                
+                                @if (school.EstablishedYear > 0)
+                                {
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            <i class="bi bi-calendar"></i> Thành lập: @school.EstablishedYear
+                                        </small>
+                                    </div>
+                                }
+                                
+                                @if (school.TuitionFee.HasValue && school.TuitionFee > 0)
+                                {
+                                    <div class="mb-3">
+                                        <strong class="text-success">
+                                            <i class="bi bi-currency-dollar"></i> @school.TuitionFee.Value.ToString("N0") VNĐ/năm
+                                        </strong>
+                                    </div>
+                                }
+                                
+                                <div class="d-grid gap-2">
+                                    <a asp-action="Details" asp-route-id="@school.Id" class="btn btn-primary">
+                                        <i class="bi bi-eye"></i> Xem chi tiết
+                                    </a>
+                                    @if (!string.IsNullOrEmpty(school.Website))
+                                    {
+                                        <a href="@school.Website" target="_blank" class="btn btn-outline-secondary btn-sm">
+                                            <i class="bi bi-globe"></i> Website
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="bi bi-building display-1 text-muted"></i>
+                    <h3 class="text-muted">Chưa có trường học nào</h3>
+                    <p class="text-muted">Dữ liệu trường học đang được cập nhật.</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            populateLocationFilter();
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            filterSchools();
+        });
+
+        document.getElementById('typeFilter').addEventListener('change', function() {
+            filterSchools();
+        });
+
+        document.getElementById('locationFilter').addEventListener('change', function() {
+            filterSchools();
+        });
+
+        // Populate location filter with unique cities from school addresses
+        function populateLocationFilter() {
+            const schoolCards = document.querySelectorAll('.school-card');
+            const cities = new Set();
+
+            schoolCards.forEach(card => {
+                const address = card.getAttribute('data-location');
+                if (address) {
+                    // Extract city names from address
+                    if (address.includes('Hà Nội')) cities.add('Hà Nội');
+                    if (address.includes('TP.HCM') || address.includes('Sài Gòn')) cities.add('TP.HCM');
+                    if (address.includes('Đà Nẵng')) cities.add('Đà Nẵng');
+                    if (address.includes('Cần Thơ')) cities.add('Cần Thơ');
+                    if (address.includes('Hải Phòng')) cities.add('Hải Phòng');
+                    if (address.includes('Huế')) cities.add('Huế');
+                    if (address.includes('Nha Trang')) cities.add('Nha Trang');
+                    if (address.includes('Vũng Tàu')) cities.add('Vũng Tàu');
+                }
+            });
+
+            const locationFilter = document.getElementById('locationFilter');
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                locationFilter.appendChild(option);
+            });
+        }
+        
+        function filterSchools() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('typeFilter').value;
+            const locationFilter = document.getElementById('locationFilter').value;
+
+            const schoolCards = document.querySelectorAll('.school-card');
+            let visibleCount = 0;
+
+            // Add active class to filters
+            document.getElementById('searchInput').classList.toggle('filter-active', searchTerm !== '');
+            document.getElementById('typeFilter').classList.toggle('filter-active', typeFilter !== '');
+            document.getElementById('locationFilter').classList.toggle('filter-active', locationFilter !== '');
+
+            schoolCards.forEach(card => {
+                const schoolName = card.querySelector('.card-title').textContent.toLowerCase();
+                const schoolType = card.getAttribute('data-type');
+                const schoolLocation = card.getAttribute('data-location').toLowerCase();
+
+                const matchesSearch = schoolName.includes(searchTerm);
+                const matchesType = !typeFilter || schoolType === typeFilter;
+                const matchesLocation = !locationFilter || schoolLocation.includes(locationFilter.toLowerCase());
+
+                if (matchesSearch && matchesType && matchesLocation) {
+                    card.style.display = 'block';
+                    card.classList.remove('filtered-out');
+                    visibleCount++;
+
+                    // Highlight location if filtering by location
+                    if (locationFilter) {
+                        highlightLocation(card, locationFilter);
+                    } else {
+                        removeLocationHighlight(card);
+                    }
+                } else {
+                    card.style.display = 'none';
+                    card.classList.add('filtered-out');
+                }
+            });
+
+            // Show/hide no results message
+            updateNoResultsMessage(visibleCount);
+        }
+
+        function highlightLocation(card, locationFilter) {
+            const locationElement = card.querySelector('.bi-geo-alt').parentElement;
+            const text = locationElement.textContent;
+            const highlightedText = text.replace(
+                new RegExp(locationFilter, 'gi'),
+                `<span class="location-highlight">$&</span>`
+            );
+            locationElement.innerHTML = locationElement.innerHTML.replace(text.trim(), highlightedText);
+        }
+
+        function removeLocationHighlight(card) {
+            const locationElement = card.querySelector('.bi-geo-alt').parentElement;
+            locationElement.innerHTML = locationElement.innerHTML.replace(
+                /<span class="location-highlight">(.*?)<\/span>/g,
+                '$1'
+            );
+        }
+
+        function updateNoResultsMessage(visibleCount) {
+            let noResultsDiv = document.getElementById('noResultsMessage');
+
+            if (visibleCount === 0) {
+                if (!noResultsDiv) {
+                    noResultsDiv = document.createElement('div');
+                    noResultsDiv.id = 'noResultsMessage';
+                    noResultsDiv.className = 'col-12';
+                    noResultsDiv.innerHTML = `
+                        <div class="text-center py-5">
+                            <i class="bi bi-search display-1 text-muted"></i>
+                            <h3 class="text-muted">Không tìm thấy trường học nào</h3>
+                            <p class="text-muted">Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm.</p>
+                        </div>
+                    `;
+                    document.getElementById('schoolsContainer').appendChild(noResultsDiv);
+                }
+            } else {
+                if (noResultsDiv) {
+                    noResultsDiv.remove();
+                }
+            }
+        }
+    </script>
+}

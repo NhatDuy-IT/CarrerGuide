@@ -1,0 +1,143 @@
+@model MyAspNetCoreApp.Models.Question
+
+@{
+    ViewData["Title"] = "Thêm câu hỏi mới";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Thêm câu hỏi mới</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-plus mr-1"></i>
+            Thông tin câu hỏi
+        </div>
+        <div class="card-body">
+            <form asp-action="AddQuestion">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ExamId" />
+
+                <div class="form-group">
+                    <label asp-for="QuestionText" class="control-label">Nội dung câu hỏi</label>
+                    <textarea asp-for="QuestionText" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="QuestionText" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Type" class="control-label">Loại câu hỏi</label>
+                    <select asp-for="Type" class="form-control" asp-items="@Html.GetEnumSelectList<QuestionType>()">
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Points" class="control-label">Điểm số</label>
+                    <input asp-for="Points" class="form-control" type="number" min="1" value="1" />
+                    <span asp-validation-for="Points" class="text-danger"></span>
+                </div>
+
+                <div id="answersSection">
+                    <h4>Câu trả lời</h4>
+                    <div id="answerContainer">
+                        <!-- Dynamic answers will be added here -->
+                    </div>
+                    <button type="button" id="addAnswer" class="btn btn-secondary mb-3">
+                        <i class="fas fa-plus"></i> Thêm câu trả lời
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    <a asp-action="Questions" asp-route-id="@Model.ExamId" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            let answerIndex = 0;
+
+            function addAnswerField() {
+                const html = `
+                    <div class="answer-group mb-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="radio" name="correctAnswer" value="${answerIndex}">
+                                </div>
+                            </div>
+                            <input type="text" name="Answers[${answerIndex}].AnswerText" class="form-control" placeholder="Nhập câu trả lời" required>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-danger remove-answer">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+                
+                $('#answerContainer').append(html);
+                answerIndex++;
+            }
+
+            $('#addAnswer').click(addAnswerField);
+
+            $(document).on('click', '.remove-answer', function() {
+                $(this).closest('.answer-group').remove();
+            });
+
+            // Add two answer fields by default
+            addAnswerField();
+            addAnswerField();
+
+            // Handle question type change
+            $('#Type').change(function() {
+                const type = $(this).val();
+                if (type == '@((int)QuestionType.TrueFalse)') {
+                    $('#answerContainer').empty();
+                    $('#addAnswer').hide();
+                    // Add True/False options
+                    const htmlTrue = `
+                        <div class="answer-group mb-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="correctAnswer" value="0" checked>
+                                    </div>
+                                </div>
+                                <input type="text" name="Answers[0].AnswerText" class="form-control" value="Đúng" readonly>
+                            </div>
+                        </div>`;
+                    const htmlFalse = `
+                        <div class="answer-group mb-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="correctAnswer" value="1">
+                                    </div>
+                                </div>
+                                <input type="text" name="Answers[1].AnswerText" class="form-control" value="Sai" readonly>
+                            </div>
+                        </div>`;
+                    $('#answerContainer').append(htmlTrue + htmlFalse);
+                } else if (type == '@((int)QuestionType.Essay)') {
+                    $('#answerContainer').empty();
+                    $('#addAnswer').hide();
+                } else {
+                    $('#answerContainer').empty();
+                    $('#addAnswer').show();
+                    addAnswerField();
+                    addAnswerField();
+                }
+            });
+        });
+    </script>
+}

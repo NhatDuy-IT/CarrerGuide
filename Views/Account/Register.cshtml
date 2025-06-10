@@ -1,0 +1,207 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+<style>
+    .register-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        margin: -80px -15px -50px -15px;
+        padding: 80px 15px 50px 15px;
+    }
+
+    .register-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        max-width: 450px;
+        width: 100%;
+    }
+
+    .register-header {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        padding: 2rem;
+        text-align: center;
+        border: none;
+    }
+
+    .register-header h3 {
+        color: white;
+        font-weight: 600;
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    .register-header i {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .register-body {
+        padding: 2rem;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #11998e;
+        box-shadow: 0 0 0 0.2rem rgba(17, 153, 142, 0.25);
+    }
+
+    .input-group-text {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+        border: none;
+        border-radius: 10px 0 0 10px;
+    }
+
+    .btn-register {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(17, 153, 142, 0.3);
+    }
+
+    .btn-register::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-register:hover::before {
+        left: 100%;
+    }
+
+    .login-link {
+        color: #11998e;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .login-link:hover {
+        color: #38ef7d;
+        text-decoration: underline;
+    }
+
+    /* Responsive styles */
+</style>
+
+<style media="screen and (max-width: 768px)">
+    .register-container {
+        padding: 1rem !important;
+    }
+
+    .register-header {
+        padding: 1.5rem !important;
+    }
+
+    .register-body {
+        padding: 1.5rem !important;
+    }
+</style>
+
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <i class="bi bi-person-plus"></i>
+            <h3>Đăng ký tài khoản</h3>
+        </div>
+        <div class="register-body">
+            <form asp-action="Register" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label fw-semibold">Họ và tên</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-person"></i>
+                        </span>
+                        <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên" />
+                    </div>
+                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-semibold">Email</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+                        <input asp-for="Email" class="form-control" placeholder="Nhập email của bạn" />
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label fw-semibold">Mật khẩu</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-lock"></i>
+                        </span>
+                        <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu" />
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                    <div class="form-text small">
+                        Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số.
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ConfirmPassword" class="form-label fw-semibold">Xác nhận mật khẩu</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-lock-fill"></i>
+                        </span>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Nhập lại mật khẩu" />
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                </div>
+
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-register btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>Đăng ký
+                    </button>
+                </div>
+            </form>
+
+            <div class="text-center">
+                <p class="mb-0 text-muted">
+                    Đã có tài khoản?
+                    <a asp-action="Login" class="login-link">Đăng nhập ngay</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

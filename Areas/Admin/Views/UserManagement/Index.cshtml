@@ -1,0 +1,189 @@
+@model List<UserManagementViewModel>
+@{
+    ViewData["Title"] = "Quản lý người dùng";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="fw-bold">
+            <i class="bi bi-people"></i> Quản lý người dùng
+        </h1>
+        <p class="text-muted">Quản lý tài khoản và phân quyền người dùng trong hệ thống</p>
+    </div>
+</div>
+
+<!-- Statistics -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h4>@Model.Count</h4>
+                <p class="mb-0">Tổng người dùng</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h4>@Model.Count(u => u.Status == "Hoạt động")</h4>
+                <p class="mb-0">Đang hoạt động</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white">
+            <div class="card-body text-center">
+                <h4>@Model.Count(u => u.Roles.Contains("Admin"))</h4>
+                <p class="mb-0">Quản trị viên</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body text-center">
+                <h4>@Model.Count(u => u.Status == "Bị khóa")</h4>
+                <p class="mb-0">Bị khóa</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User List -->
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Danh sách người dùng</h5>
+            <div>
+                <button class="btn btn-outline-secondary btn-sm" onclick="refreshTable()">
+                    <i class="bi bi-arrow-clockwise"></i> Làm mới
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Email</th>
+                            <th>Tên đăng nhập</th>
+                            <th>Vai trò</th>
+                            <th>Trạng thái</th>
+                            <th>Email xác thực</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@user.Email</strong>
+                                    @if (user.Roles.Contains("Admin"))
+                                    {
+                                        <i class="bi bi-shield-check text-danger" title="Admin"></i>
+                                    }
+                                </td>
+                                <td>@user.UserName</td>
+                                <td>
+                                    @foreach (var role in user.Roles)
+                                    {
+                                        <span class="badge bg-@(role == "Admin" ? "danger" : role == "Moderator" ? "warning" : "primary") me-1">
+                                            @role
+                                        </span>
+                                    }
+                                    @if (!user.Roles.Any())
+                                    {
+                                        <span class="text-muted">Chưa có vai trò</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (user.Status == "Hoạt động")
+                                    {
+                                        <span class="badge bg-success">Hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Bị khóa</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (user.EmailConfirmed)
+                                    {
+                                        <i class="bi bi-check-circle text-success" title="Đã xác thực"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-x-circle text-danger" title="Chưa xác thực"></i>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Details" asp-route-id="@user.Id" 
+                                           class="btn btn-outline-info btn-sm" title="Xem chi tiết">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="ManageRoles" asp-route-id="@user.Id" 
+                                           class="btn btn-outline-warning btn-sm" title="Quản lý vai trò">
+                                            <i class="bi bi-person-gear"></i>
+                                        </a>
+                                        @if (user.Status == "Hoạt động")
+                                        {
+                                            <form asp-action="ToggleLockout" asp-route-id="@user.Id" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm" 
+                                                        title="Khóa tài khoản" onclick="return confirm('Bạn có chắc muốn khóa tài khoản này?')">
+                                                    <i class="bi bi-lock"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form asp-action="ToggleLockout" asp-route-id="@user.Id" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-outline-success btn-sm" 
+                                                        title="Mở khóa tài khoản" onclick="return confirm('Bạn có chắc muốn mở khóa tài khoản này?')">
+                                                    <i class="bi bi-unlock"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        @if (!user.Roles.Contains("Admin"))
+                                        {
+                                            <form asp-action="Delete" asp-route-id="@user.Id" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm" 
+                                                        title="Xóa tài khoản" onclick="return confirm('Bạn có chắc muốn xóa tài khoản này? Hành động này không thể hoàn tác!')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-4">
+                <i class="bi bi-people display-1 text-muted"></i>
+                <h4 class="text-muted">Không có người dùng nào</h4>
+                <p class="text-muted">Hệ thống chưa có người dùng nào được đăng ký.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function refreshTable() {
+            location.reload();
+        }
+        
+        // Auto refresh every 30 seconds
+        setInterval(function() {
+            // Could implement AJAX refresh here
+        }, 30000);
+    </script>
+}

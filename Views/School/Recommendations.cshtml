@@ -1,0 +1,184 @@
+@model List<SchoolDto>
+@{
+    ViewData["Title"] = "Gợi ý trường học";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-4">
+                <i class="bi bi-lightbulb"></i> Gợi ý trường học
+            </h1>
+            <p class="text-center text-muted mb-5">Các trường đại học được đề xuất dựa trên tiêu chí phù hợp</p>
+        </div>
+    </div>
+
+    <!-- Recommendation Criteria -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-info-circle"></i> Tiêu chí đề xuất
+                    </h5>
+                    <p class="card-text">
+                        Các trường học được sắp xếp theo học phí từ thấp đến cao, phù hợp với nhiều điều kiện kinh tế khác nhau.
+                        Bạn có thể làm <a asp-controller="Survey" asp-action="Index" class="text-decoration-none">bài khảo sát MBTI</a> 
+                        để nhận được gợi ý chính xác hơn.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommended Schools -->
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var school in Model)
+            {
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100 shadow-sm border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h6 class="mb-0">
+                                <i class="bi bi-star-fill"></i> Được đề xuất
+                            </h6>
+                        </div>
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                @if (!string.IsNullOrEmpty(school.ImageUrl))
+                                {
+                                    <img src="@school.ImageUrl" class="img-fluid h-100" alt="@school.Name" style="object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div class="bg-light h-100 d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-building display-6 text-muted"></i>
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">@school.Name</h5>
+                                    
+                                    <div class="mb-2">
+                                        @if (!string.IsNullOrEmpty(school.Type))
+                                        {
+                                            <span class="badge bg-@(school.Type == "Công lập" ? "success" : "info") me-1">
+                                                @school.Type
+                                            </span>
+                                        }
+                                        @if (!string.IsNullOrEmpty(school.Location))
+                                        {
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-geo-alt"></i> @school.Location
+                                            </span>
+                                        }
+                                    </div>
+                                    
+                                    @if (!string.IsNullOrEmpty(school.Description))
+                                    {
+                                        <p class="card-text small text-muted">
+                                            @(school.Description.Length > 80 ? school.Description.Substring(0, 80) + "..." : school.Description)
+                                        </p>
+                                    }
+                                    
+                                    <div class="row mb-3">
+                                        @if (school.EstablishedYear > 0)
+                                        {
+                                            <div class="col-6">
+                                                <small class="text-muted">
+                                                    <i class="bi bi-calendar"></i> @school.EstablishedYear
+                                                </small>
+                                            </div>
+                                        }
+                                        @if (school.TuitionFee.HasValue && school.TuitionFee > 0)
+                                        {
+                                            <div class="col-6 text-end">
+                                                <strong class="text-success">
+                                                    @school.TuitionFee.Value.ToString("N0") VNĐ
+                                                </strong>
+                                            </div>
+                                        }
+                                    </div>
+                                    
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <a asp-action="Details" asp-route-id="@school.Id" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-eye"></i> Chi tiết
+                                        </a>
+                                        @if (!string.IsNullOrEmpty(school.Website))
+                                        {
+                                            <a href="@school.Website" target="_blank" class="btn btn-outline-secondary btn-sm">
+                                                <i class="bi bi-globe"></i> Website
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="bi bi-lightbulb display-1 text-muted"></i>
+                    <h3 class="text-muted">Chưa có gợi ý nào</h3>
+                    <p class="text-muted">Hãy làm bài khảo sát để nhận được gợi ý phù hợp.</p>
+                    <a asp-controller="Survey" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-clipboard-data"></i> Làm khảo sát MBTI
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Additional Actions -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-compass"></i> Khám phá thêm
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center">
+                                <i class="bi bi-clipboard-data display-4 text-primary"></i>
+                                <h6 class="mt-2">Khảo sát MBTI</h6>
+                                <p class="text-muted small">Tìm hiểu tính cách để có gợi ý chính xác hơn</p>
+                                <a asp-controller="Survey" asp-action="Index" class="btn btn-outline-primary">
+                                    Bắt đầu khảo sát
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center">
+                                <i class="bi bi-clipboard-check display-4 text-success"></i>
+                                <h6 class="mt-2">Bài kiểm tra</h6>
+                                <p class="text-muted small">Đánh giá năng lực và sở thích nghề nghiệp</p>
+                                <a asp-controller="Exam" asp-action="Index" class="btn btn-outline-success">
+                                    Làm bài kiểm tra
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="text-center">
+                                <i class="bi bi-building display-4 text-info"></i>
+                                <h6 class="mt-2">Tất cả trường học</h6>
+                                <p class="text-muted small">Xem danh sách đầy đủ các trường đại học</p>
+                                <a asp-controller="School" asp-action="Index" class="btn btn-outline-info">
+                                    Xem tất cả
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

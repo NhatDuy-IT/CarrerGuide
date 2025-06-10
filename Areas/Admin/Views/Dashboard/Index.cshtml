@@ -1,0 +1,226 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Bảng điều khiển Admin";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="fw-bold">
+            <i class="bi bi-speedometer2"></i> Bảng điều khiển Admin
+        </h1>
+        <p class="text-muted">Chào mừng bạn đến với khu vực quản trị hệ thống Career Guide</p>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">@Model.TotalUsers</h4>
+                        <p class="mb-0">Người dùng</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-people fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a asp-controller="UserManagement" asp-action="Index" class="text-white text-decoration-none">
+                    <small>Xem chi tiết <i class="bi bi-arrow-right"></i></small>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">@Model.TotalSchools</h4>
+                        <p class="mb-0">Trường học</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-building fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="text-white text-decoration-none">
+                    <small>Quản lý <i class="bi bi-arrow-right"></i></small>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">@Model.TotalExams</h4>
+                        <p class="mb-0">Bài kiểm tra</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-clipboard-check fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="text-white text-decoration-none">
+                    <small>Quản lý <i class="bi bi-arrow-right"></i></small>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">@Model.TotalSurveys</h4>
+                        <p class="mb-0">Khảo sát</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-clipboard-data fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="text-white text-decoration-none">
+                    <small>Quản lý <i class="bi bi-arrow-right"></i></small>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activities -->
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-clock-history"></i> Kết quả thi gần đây
+                </h5>
+            </div>
+            <div class="card-body">
+                @if (Model.RecentExamResults.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Bài thi</th>
+                                    <th>Điểm</th>
+                                    <th>Ngày thi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var result in Model.RecentExamResults)
+                                {
+                                    <tr>
+                                        <td>@result.Exam.Title</td>
+                                        <td>
+                                            <span class="badge bg-@(result.Score >= 80 ? "success" : result.Score >= 60 ? "warning" : "danger")">
+                                                @result.Score%
+                                            </span>
+                                        </td>
+                                        <td>@result.TakenDate.ToString("dd/MM HH:mm")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">Chưa có kết quả thi nào.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-graph-up"></i> Kết quả khảo sát gần đây
+                </h5>
+            </div>
+            <div class="card-body">
+                @if (Model.RecentSurveyResults.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Khảo sát</th>
+                                    <th>Kết quả</th>
+                                    <th>Ngày hoàn thành</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var result in Model.RecentSurveyResults)
+                                {
+                                    <tr>
+                                        <td>@result.Survey.Title</td>
+                                        <td>
+                                            <span class="badge bg-primary">@result.Result</span>
+                                        </td>
+                                        <td>@result.CompletedDate.ToString("dd/MM HH:mm")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">Chưa có kết quả khảo sát nào.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-lightning"></i> Thao tác nhanh
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-2">
+                        <a asp-controller="UserManagement" asp-action="Index" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-people"></i><br>Quản lý người dùng
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a asp-controller="SchoolManagement" asp-action="Create" class="btn btn-outline-success w-100">
+                            <i class="bi bi-plus-circle"></i><br>Thêm trường học
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a asp-controller="ExamManagement" asp-action="Create" class="btn btn-outline-info w-100">
+                            <i class="bi bi-plus-square"></i><br>Tạo bài thi
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a asp-controller="Reports" asp-action="Index" class="btn btn-outline-warning w-100">
+                            <i class="bi bi-clipboard-plus"></i><br>Xem báo cáo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

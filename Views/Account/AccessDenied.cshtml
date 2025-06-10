@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = "Truy cập bị từ chối";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white text-center">
+                <h3 class="mb-0">
+                    <i class="bi bi-shield-x"></i> Truy cập bị từ chối
+                </h3>
+            </div>
+            <div class="card-body text-center">
+                <div class="mb-4">
+                    <i class="bi bi-exclamation-triangle display-1 text-warning"></i>
+                </div>
+                
+                <h4 class="text-danger mb-3">Bạn không có quyền truy cập trang này!</h4>
+                
+                <p class="text-muted mb-4">
+                    Trang bạn đang cố gắng truy cập yêu cầu quyền đặc biệt mà tài khoản của bạn không có.
+                    Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là lỗi.
+                </p>
+                
+                <div class="d-flex justify-content-center gap-3">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-house"></i> Về trang chủ
+                    </a>
+                    
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-action="Profile" class="btn btn-outline-secondary">
+                            <i class="bi bi-person"></i> Hồ sơ của tôi
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="Login" class="btn btn-success">
+                            <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6>Thông tin tài khoản hiện tại:</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><strong>Email:</strong> @User.Identity.Name</li>
+                        <li><strong>Vai trò:</strong> 
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <span class="badge bg-danger">Admin</span>
+                            }
+                            else if (User.IsInRole("Moderator"))
+                            {
+                                <span class="badge bg-warning">Moderator</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-primary">User</span>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>

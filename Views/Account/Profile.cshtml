@@ -1,0 +1,188 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    <i class="bi bi-person-circle"></i> Hồ sơ cá nhân
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-person-circle display-1 text-primary"></i>
+                        </div>
+                        <h5>@Model.UserName</h5>
+                        <p class="text-muted">@Model.Email</p>
+                        
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <span class="badge bg-danger mb-2">
+                                <i class="bi bi-shield-check"></i> Admin
+                            </span>
+                        }
+                        else if (User.IsInRole("Moderator"))
+                        {
+                            <span class="badge bg-warning mb-2">
+                                <i class="bi bi-shield"></i> Moderator
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-primary mb-2">
+                                <i class="bi bi-person"></i> User
+                            </span>
+                        }
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <h5>Thông tin tài khoản</h5>
+                        <hr>
+                        
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <strong>Email:</strong>
+                            </div>
+                            <div class="col-sm-8">
+                                @Model.Email
+                                <i class="bi bi-check-circle text-success" title="Email đã xác thực"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <strong>Tên đăng nhập:</strong>
+                            </div>
+                            <div class="col-sm-8">
+                                @Model.UserName
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <strong>Vai trò:</strong>
+                            </div>
+                            <div class="col-sm-8">
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <span class="badge bg-danger">Admin</span>
+                                    <small class="text-muted d-block">Quản trị viên hệ thống</small>
+                                }
+                                else if (User.IsInRole("Moderator"))
+                                {
+                                    <span class="badge bg-warning">Moderator</span>
+                                    <small class="text-muted d-block">Người kiểm duyệt</small>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary">User</span>
+                                    <small class="text-muted d-block">Người dùng thông thường</small>
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <strong>Ngày tham gia:</strong>
+                            </div>
+                            <div class="col-sm-8">
+                                <span class="text-muted">Thông tin không có sẵn</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <h5>Thao tác nhanh</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="Dashboard" asp-action="Index" asp-area="Admin" class="btn btn-danger">
+                                    <i class="bi bi-speedometer2"></i> Admin Panel
+                                </a>
+                            }
+                            
+                            <a asp-controller="Exam" asp-action="Index" asp-area="" class="btn btn-info">
+                                <i class="bi bi-clipboard-check"></i> Làm bài thi
+                            </a>
+                            
+                            <a asp-controller="Survey" asp-action="Index" asp-area="" class="btn btn-warning">
+                                <i class="bi bi-clipboard-data"></i> Khảo sát MBTI
+                            </a>
+                            
+                            <a asp-controller="School" asp-action="Index" asp-area="" class="btn btn-success">
+                                <i class="bi bi-building"></i> Tìm trường học
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-house"></i> Về trang chủ
+                    </a>
+                    
+                    <form asp-action="Logout" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Bạn có chắc muốn đăng xuất?')">
+                            <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Activity Summary -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-activity"></i> Hoạt động gần đây
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <h4 class="text-primary">0</h4>
+                            <small class="text-muted">Bài thi đã làm</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <h4 class="text-success">0</h4>
+                            <small class="text-muted">Khảo sát hoàn thành</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <h4 class="text-info">0</h4>
+                            <small class="text-muted">Trường đã xem</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <h4 class="text-warning">0</h4>
+                            <small class="text-muted">Gợi ý nhận được</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <p class="text-muted">
+                        <i class="bi bi-info-circle"></i> 
+                        Bắt đầu sử dụng hệ thống để xem thống kê hoạt động của bạn
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

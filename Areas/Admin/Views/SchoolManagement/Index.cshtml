@@ -1,0 +1,212 @@
+@model List<School>
+@{
+    ViewData["Title"] = "Quản lý trường học";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="fw-bold">
+            <i class="bi bi-building"></i> Quản lý trường học
+        </h1>
+        <p class="text-muted">Quản lý thông tin các trường đại học trong hệ thống</p>
+    </div>
+</div>
+
+<!-- Statistics -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h4>@Model.Count</h4>
+                <p class="mb-0">Tổng số trường</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h4>@Model.Count(s => s.Type == "Công lập")</h4>
+                <p class="mb-0">Trường công lập</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <h4>@Model.Count(s => s.Type == "Tư thục")</h4>
+                <p class="mb-0">Trường tư thục</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body text-center">
+                <h4>@(Model.Any() ? Model.Min(s => s.EstablishedYear) : DateTime.Now.Year)</h4>
+                <p class="mb-0">Năm lâu đời nhất</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Actions -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Thêm trường học mới
+                </a>
+            </div>
+            <div>
+                <div class="input-group" style="width: 300px;">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm trường học..." id="searchInput">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Schools List -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Danh sách trường học</h5>
+    </div>
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover" id="schoolsTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Tên trường</th>
+                            <th>Loại hình</th>
+                            <th>Địa chỉ</th>
+                            <th>Website</th>
+                            <th>Năm thành lập</th>
+                            <th>Học phí</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var school in Model.OrderBy(s => s.Name))
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @if (!string.IsNullOrEmpty(school.ImageUrl))
+                                        {
+                                            <img src="@school.ImageUrl" alt="@school.Name" class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-secondary rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="bi bi-building text-white"></i>
+                                            </div>
+                                        }
+                                        <div>
+                                            <strong>@school.Name</strong>
+                                            @if (!string.IsNullOrEmpty(school.Website))
+                                            {
+                                                <br><small><a href="@school.Website" target="_blank" class="text-muted">@school.Website</a></small>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(school.Type))
+                                    {
+                                        <span class="badge bg-@(school.Type == "Công lập" ? "success" : school.Type == "Tư thục" ? "info" : "warning")">
+                                            @school.Type
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Chưa xác định</span>
+                                    }
+                                </td>
+                                <td>@school.Address</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(school.Website))
+                                    {
+                                        <a href="@school.Website" target="_blank" class="text-decoration-none">
+                                            <i class="bi bi-globe"></i> Website
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Chưa có</span>
+                                    }
+                                </td>
+                                <td>@school.EstablishedYear</td>
+                                <td>
+                                    @if (school.TuitionFee > 0)
+                                    {
+                                        <span class="text-success fw-bold">@school.TuitionFee.ToString("N0") VNĐ</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Chưa cập nhật</span>
+                                    }
+                                </td>
+                                <td>@school.EstablishedYear</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Details" asp-route-id="@school.Id" 
+                                           class="btn btn-outline-info btn-sm" title="Xem chi tiết">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@school.Id" 
+                                           class="btn btn-outline-warning btn-sm" title="Chỉnh sửa">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@school.Id" 
+                                           class="btn btn-outline-danger btn-sm" title="Xóa">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-4">
+                <i class="bi bi-building display-1 text-muted"></i>
+                <h4 class="text-muted">Chưa có trường học nào</h4>
+                <p class="text-muted">Hãy thêm trường học đầu tiên vào hệ thống.</p>
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Thêm trường học mới
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            var input = this.value.toLowerCase();
+            var table = document.getElementById('schoolsTable');
+            var rows = table.getElementsByTagName('tr');
+            
+            for (var i = 1; i < rows.length; i++) {
+                var row = rows[i];
+                var schoolName = row.cells[0].textContent.toLowerCase();
+                var location = row.cells[2].textContent.toLowerCase();
+                
+                if (schoolName.includes(input) || location.includes(input)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    </script>
+}

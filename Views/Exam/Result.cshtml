@@ -1,0 +1,288 @@
+@model ExamResult
+@{
+    ViewData["Title"] = $"Kết quả bài thi: {Model.Exam.Title}";
+    var percentage = Model.TotalQuestions > 0 ? (Model.CorrectAnswers * 100) / Model.TotalQuestions : 0;
+    var gradeClass = percentage >= 80 ? "success" : percentage >= 60 ? "warning" : "danger";
+    var gradeText = percentage >= 80 ? "Xuất sắc" : percentage >= 60 ? "Khá" : "Cần cố gắng";
+}
+
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Bài kiểm tra</a></li>
+                <li class="breadcrumb-item active">Kết quả</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-@gradeClass text-white text-center">
+                <h2 class="mb-0">
+                    @if (percentage >= 80)
+                    {
+                        <i class="bi bi-trophy"></i>
+                    }
+                    else if (percentage >= 60)
+                    {
+                        <i class="bi bi-award"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-book"></i>
+                    }
+                    @gradeText
+                </h2>
+                <p class="mb-0">Kết quả bài thi: @Model.Exam.Title</p>
+            </div>
+            <div class="card-body text-center">
+                <div class="score-display mb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="score-circle mx-auto mb-3" style="width: 120px; height: 120px;">
+                                <div class="progress-circle" data-percentage="@percentage">
+                                    <span class="progress-text">@Model.Score%</span>
+                                </div>
+                            </div>
+                            <h5>Điểm số</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-display">
+                                <h2 class="text-success">@Model.CorrectAnswers</h2>
+                                <h5>Câu đúng</h5>
+                                <p class="text-muted">/@Model.TotalQuestions câu</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-display">
+                                <h2 class="text-info">@Model.TimeTaken.ToString(@"mm\:ss")</h2>
+                                <h5>Thời gian</h5>
+                                <p class="text-muted">Đã sử dụng</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="exam-details mb-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <i class="bi bi-calendar3 text-primary"></i>
+                                <strong>Ngày thi:</strong> @Model.TakenDate.ToString("dd/MM/yyyy HH:mm")
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <i class="bi bi-book text-info"></i>
+                                <strong>Bài thi:</strong> @Model.Exam.Title
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="performance-analysis mb-4">
+                    <h5>Phân tích kết quả</h5>
+                    <div class="progress mb-2" style="height: 25px;">
+                        <div class="progress-bar bg-@gradeClass" role="progressbar" 
+                             style="width: @percentage%" 
+                             aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
+                            @percentage%
+                        </div>
+                    </div>
+                    <p class="text-muted">
+                        @if (percentage >= 80)
+                        {
+                            <text>Xuất sắc! Bạn đã nắm vững kiến thức và có thể tiếp tục với các chủ đề nâng cao.</text>
+                        }
+                        else if (percentage >= 60)
+                        {
+                            <text>Khá tốt! Bạn đã hiểu được phần lớn kiến thức, hãy ôn luyện thêm một số phần còn thiếu.</text>
+                        }
+                        else
+                        {
+                            <text>Cần cố gắng hơn! Hãy ôn lại kiến thức cơ bản và thử làm lại bài thi.</text>
+                        }
+                    </p>
+                </div>
+                
+                <div class="action-buttons">
+                    <a asp-action="Take" asp-route-id="@Model.ExamId" class="btn btn-primary btn-lg me-2">
+                        <i class="bi bi-arrow-clockwise"></i> Làm lại
+                    </a>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg me-2">
+                        <i class="bi bi-list"></i> Bài thi khác
+                    </a>
+                    <a asp-action="MyResults" class="btn btn-success btn-lg">
+                        <i class="bi bi-clipboard-data"></i> Lịch sử thi
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Thống kê chi tiết</h5>
+            </div>
+            <div class="card-body">
+                <div class="stats-list">
+                    <div class="stat-item d-flex justify-content-between">
+                        <span>Tổng số câu:</span>
+                        <strong>@Model.TotalQuestions</strong>
+                    </div>
+                    <div class="stat-item d-flex justify-content-between">
+                        <span>Câu trả lời đúng:</span>
+                        <strong class="text-success">@Model.CorrectAnswers</strong>
+                    </div>
+                    <div class="stat-item d-flex justify-content-between">
+                        <span>Câu trả lời sai:</span>
+                        <strong class="text-danger">@(Model.TotalQuestions - Model.CorrectAnswers)</strong>
+                    </div>
+                    <div class="stat-item d-flex justify-content-between">
+                        <span>Tỷ lệ chính xác:</span>
+                        <strong class="text-@gradeClass">@percentage%</strong>
+                    </div>
+                    <div class="stat-item d-flex justify-content-between">
+                        <span>Thời gian làm bài:</span>
+                        <strong>@Model.TimeTaken.ToString(@"mm\:ss")</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Gợi ý học tập</h5>
+            </div>
+            <div class="card-body">
+                @if (percentage >= 80)
+                {
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle"></i>
+                        Bạn đã làm rất tốt! Hãy thử thách bản thân với các bài thi khó hơn.
+                    </div>
+                }
+                else if (percentage >= 60)
+                {
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        Kết quả khá tốt! Hãy ôn luyện thêm để đạt điểm cao hơn.
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <i class="bi bi-x-circle"></i>
+                        Cần ôn tập thêm. Hãy xem lại kiến thức cơ bản trước khi làm lại.
+                    </div>
+                }
+                
+                <ul class="list-unstyled mt-3">
+                    <li class="mb-2">
+                        <a asp-controller="School" asp-action="Index" class="text-decoration-none">
+                            <i class="bi bi-building text-primary"></i> Tìm hiểu về các trường học
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a asp-controller="Survey" asp-action="Index" class="text-decoration-none">
+                            <i class="bi bi-clipboard-check text-success"></i> Làm khảo sát tính cách
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Animate progress circle
+        document.addEventListener('DOMContentLoaded', function() {
+            const percentage = @percentage;
+            const circle = document.querySelector('.progress-circle');
+            
+            // Simple animation for the score
+            let currentScore = 0;
+            const targetScore = @Model.Score;
+            const increment = targetScore / 50; // 50 steps animation
+            
+            const timer = setInterval(() => {
+                currentScore += increment;
+                if (currentScore >= targetScore) {
+                    currentScore = targetScore;
+                    clearInterval(timer);
+                }
+                document.querySelector('.progress-text').textContent = Math.round(currentScore) + '%';
+            }, 20);
+        });
+        
+        // Share result function
+        function shareResult() {
+            const text = `Tôi vừa hoàn thành bài thi "@Model.Exam.Title" và đạt được @Model.Score%!`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Kết quả bài thi của tôi',
+                    text: text,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(text + ' ' + window.location.href).then(() => {
+                    alert('Đã sao chép kết quả vào clipboard!');
+                });
+            }
+        }
+    </script>
+    
+    <style>
+        .score-circle {
+            position: relative;
+            border-radius: 50%;
+            background: conic-gradient(#007bff 0deg, #007bff @(percentage * 3.6)deg, #e9ecef @(percentage * 3.6)deg, #e9ecef 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .progress-circle {
+            width: 80%;
+            height: 80%;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .progress-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .stat-display {
+            padding: 1rem;
+        }
+        
+        .stat-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-item {
+            margin-bottom: 1rem;
+        }
+        
+        .detail-item i {
+            margin-right: 0.5rem;
+        }
+    </style>
+}

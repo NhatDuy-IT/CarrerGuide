@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Career Guide</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-mortarboard"></i>
+                    <span class="fw-bold">Career Guide</span>
+                </a>
+
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house me-1"></i>Trang chủ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="School" asp-action="Index">
+                                <i class="bi bi-building me-1"></i>Trường học
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Exam" asp-action="Index">
+                                <i class="bi bi-pencil-square me-1"></i>Bài kiểm tra
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Survey" asp-action="Index">
+                                <i class="bi bi-clipboard-check me-1"></i>Khảo sát MBTI
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="School" asp-action="Recommendations">
+                                <i class="bi bi-lightbulb me-1"></i>Gợi ý trường
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-circle"></i> @User.Identity.Name
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <span class="badge bg-danger ms-1">Admin</span>
+                                    }
+                                    else if (User.IsInRole("Moderator"))
+                                    {
+                                        <span class="badge bg-warning ms-1">Mod</span>
+                                    }
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
+                                            <i class="bi bi-person"></i> Hồ sơ cá nhân
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Exam" asp-action="MyResults">
+                                            <i class="bi bi-clipboard-check"></i> Kết quả thi
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Survey" asp-action="MyResults">
+                                            <i class="bi bi-clipboard-data"></i> Kết quả khảo sát
+                                        </a>
+                                    </li>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                                                <i class="bi bi-speedometer2"></i> Admin Panel
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="UserManagement" asp-action="Index">
+                                                <i class="bi bi-people"></i> Quản lý người dùng
+                                            </a>
+                                        </li>
+                                    }
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">
+                                    <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Register">
+                                    <i class="bi bi-person-plus"></i> Đăng ký
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main" class="pb-3" style="padding-top: 80px;">
+        @RenderBody()
+    </main>
+
+    <footer class="mt-5" style="background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%); margin-bottom: 0;">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-mortarboard text-white me-2" style="font-size: 2rem;"></i>
+                        <h5 class="text-white mb-0 fw-bold">Career Guide</h5>
+                    </div>
+                    <p class="text-light opacity-75">Hệ thống hướng nghiệp và tư vấn giáo dục hàng đầu, giúp bạn khám phá tiềm năng và định hướng tương lai.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-light opacity-75 hover-opacity-100">
+                            <i class="bi bi-facebook fs-5"></i>
+                        </a>
+                        <a href="#" class="text-light opacity-75 hover-opacity-100">
+                            <i class="bi bi-twitter fs-5"></i>
+                        </a>
+                        <a href="#" class="text-light opacity-75 hover-opacity-100">
+                            <i class="bi bi-instagram fs-5"></i>
+                        </a>
+                        <a href="#" class="text-light opacity-75 hover-opacity-100">
+                            <i class="bi bi-linkedin fs-5"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="text-white fw-bold mb-3">Dịch vụ</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a asp-controller="Survey" asp-action="Index" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+                                Khảo sát MBTI
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a asp-controller="Exam" asp-action="Index" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+                                Bài kiểm tra
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a asp-controller="School" asp-action="Recommendations" class="text-light opacity-75 text-decoration-none hover-opacity-100">
+                                Gợi ý trường học
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="text-white fw-bold mb-3">Liên hệ</h6>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-envelope text-light opacity-75 me-2"></i>
+                        <span class="text-light opacity-75">duyphan13032004@gmail.com</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-telephone text-light opacity-75 me-2"></i>
+                        <span class="text-light opacity-75">0387881629</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-geo-alt text-light opacity-75 me-2"></i>
+                        <span class="text-light opacity-75">TP.HCM - Việt Nam</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <h6 class="text-white fw-bold mb-3">Nhận thông báo</h6>
+                    <p class="text-light opacity-75 small">Đăng ký để nhận thông tin mới nhất về các khóa học và sự kiện.</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Email của bạn">
+                        <button class="btn btn-primary" type="button">
+                            <i class="bi bi-send"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-light opacity-25 my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-light opacity-75 mb-0">&copy; 2025 Career Guide. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-light opacity-75 text-decoration-none me-3 hover-opacity-100">Chính sách bảo mật</a>
+                    <a href="#" class="text-light opacity-75 text-decoration-none hover-opacity-100">Điều khoản sử dụng</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

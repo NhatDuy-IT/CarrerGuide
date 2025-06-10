@@ -1,0 +1,62 @@
+@model MyAspNetCoreApp.Models.Exam
+
+@{
+    ViewData["Title"] = "Xóa bài thi";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Xóa bài thi</h1>
+
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <i class="fas fa-exclamation-triangle mr-1"></i>
+            Xác nhận xóa
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <h4>Bạn có chắc chắn muốn xóa bài thi này?</h4>
+                <p>Hành động này không thể hoàn tác.</p>
+            </div>
+
+            <dl class="row">
+                <dt class="col-sm-2">Tiêu đề:</dt>
+                <dd class="col-sm-10">@Model.Title</dd>
+
+                <dt class="col-sm-2">Mô tả:</dt>
+                <dd class="col-sm-10">@Model.Description</dd>
+
+                <dt class="col-sm-2">Ngày tạo:</dt>
+                <dd class="col-sm-10">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                <dt class="col-sm-2">Thời gian:</dt>
+                <dd class="col-sm-10">@Model.Duration phút</dd>
+
+                <dt class="col-sm-2">Số câu hỏi:</dt>
+                <dd class="col-sm-10">@Model.TotalQuestions</dd>
+
+                <dt class="col-sm-2">Trạng thái:</dt>
+                <dd class="col-sm-10">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge badge-success">Đang hoạt động</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-secondary">Không hoạt động</span>
+                    }
+                </dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Xác nhận xóa
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

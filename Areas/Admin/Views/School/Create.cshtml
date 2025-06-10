@@ -1,0 +1,131 @@
+@model School
+@{
+    ViewData["Title"] = "Thêm trường mới";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">
+            <i class="bi bi-plus-circle text-primary me-2"></i>Thêm trường mới
+        </h2>
+        <p class="text-muted">Thêm thông tin trường đại học mới vào hệ thống</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-2"></i>Quay lại
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Thông tin cơ bản</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label asp-for="Name" class="form-label">Tên trường <span class="text-danger">*</span></label>
+                            <input asp-for="Name" class="form-control" placeholder="Nhập tên trường đại học">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Mô tả</label>
+                        <textarea asp-for="Description" class="form-control" rows="4" 
+                                  placeholder="Nhập mô tả về trường học..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label asp-for="Address" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                            <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ trường học">
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="PhoneNumber" class="form-label">Số điện thoại</label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="0123-456-789">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Website" class="form-label">Website</label>
+                            <input asp-for="Website" class="form-control" placeholder="https://example.edu.vn">
+                            <span asp-validation-for="Website" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="EstablishedYear" class="form-label">Năm thành lập</label>
+                            <input asp-for="EstablishedYear" class="form-control" type="number" 
+                                   min="1900" max="2024" placeholder="2000">
+                            <span asp-validation-for="EstablishedYear" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="TuitionFee" class="form-label">Học phí (VNĐ/năm) <span class="text-danger">*</span></label>
+                            <input asp-for="TuitionFee" class="form-control" type="number" 
+                                   min="0" step="1000000" placeholder="20000000">
+                            <span asp-validation-for="TuitionFee" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ImageUrl" class="form-label">URL hình ảnh</label>
+                            <input asp-for="ImageUrl" class="form-control" 
+                                   placeholder="https://example.com/image.jpg">
+                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-2"></i>Thêm trường
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle me-2"></i>Hủy bỏ
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>Hướng dẫn
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <h6 class="text-primary">Thông tin bắt buộc:</h6>
+                    <ul class="list-unstyled small">
+                        <li><i class="bi bi-check text-success me-2"></i>Tên trường</li>
+                        <li><i class="bi bi-check text-success me-2"></i>Địa chỉ</li>
+                        <li><i class="bi bi-check text-success me-2"></i>Học phí</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-3">
+                    <h6 class="text-info">Gợi ý:</h6>
+                    <ul class="list-unstyled small text-muted">
+                        <li><i class="bi bi-lightbulb me-2"></i>Sử dụng hình ảnh chất lượng cao</li>
+                        <li><i class="bi bi-lightbulb me-2"></i>Mô tả ngắn gọn, súc tích</li>
+                        <li><i class="bi bi-lightbulb me-2"></i>Kiểm tra thông tin trước khi lưu</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

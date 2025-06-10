@@ -1,0 +1,235 @@
+@model SchoolDto
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container mt-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="School" asp-action="Index">Trường học</a></li>
+            <li class="breadcrumb-item active">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- School Header -->
+            <div class="card mb-4">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl" class="img-fluid rounded-start h-100" alt="@Model.Name" style="object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="bg-light rounded-start h-100 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-building display-4 text-muted"></i>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h1 class="card-title">@Model.Name</h1>
+                            
+                            <div class="mb-3">
+                                @if (!string.IsNullOrEmpty(Model.Type))
+                                {
+                                    <span class="badge bg-@(Model.Type == "Công lập" ? "success" : "info") me-2">
+                                        @Model.Type
+                                    </span>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Location))
+                                {
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-geo-alt"></i> @Model.Location
+                                    </span>
+                                }
+                            </div>
+                            
+                            @if (!string.IsNullOrEmpty(Model.Description))
+                            {
+                                <p class="card-text">@Model.Description</p>
+                            }
+                            
+                            <div class="row">
+                                @if (Model.EstablishedYear > 0)
+                                {
+                                    <div class="col-6">
+                                        <small class="text-muted">
+                                            <i class="bi bi-calendar"></i> Thành lập: @Model.EstablishedYear
+                                        </small>
+                                    </div>
+                                }
+                                @if (Model.TuitionFee.HasValue && Model.TuitionFee > 0)
+                                {
+                                    <div class="col-6">
+                                        <small class="text-success fw-bold">
+                                            <i class="bi bi-currency-dollar"></i> @Model.TuitionFee.Value.ToString("N0") VNĐ/năm
+                                        </small>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- School Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-info-circle"></i> Thông tin chi tiết
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Thông tin cơ bản</h6>
+                            <ul class="list-unstyled">
+                                <li><strong>Tên trường:</strong> @Model.Name</li>
+                                @if (!string.IsNullOrEmpty(Model.Type))
+                                {
+                                    <li><strong>Loại hình:</strong> @Model.Type</li>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Location))
+                                {
+                                    <li><strong>Địa điểm:</strong> @Model.Location</li>
+                                }
+                                @if (Model.EstablishedYear > 0)
+                                {
+                                    <li><strong>Năm thành lập:</strong> @Model.EstablishedYear</li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Thông tin học phí</h6>
+                            @if (Model.TuitionFee.HasValue && Model.TuitionFee > 0)
+                            {
+                                <p class="text-success fw-bold fs-5">
+                                    @Model.TuitionFee.Value.ToString("N0") VNĐ/năm
+                                </p>
+                                <small class="text-muted">*Học phí có thể thay đổi theo từng ngành học</small>
+                            }
+                            else
+                            {
+                                <p class="text-muted">Thông tin học phí chưa được cập nhật</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-gear"></i> Hành động
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            @if (!string.IsNullOrEmpty(Model.Website))
+                            {
+                                <a href="@Model.Website" target="_blank" class="btn btn-primary w-100">
+                                    <i class="bi bi-globe"></i> Truy cập website
+                                </a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary w-100" disabled>
+                                    <i class="bi bi-globe"></i> Website chưa cập nhật
+                                </button>
+                            }
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <a asp-controller="Exam" asp-action="Index" class="btn btn-success w-100">
+                                <i class="bi bi-clipboard-check"></i> Làm bài kiểm tra
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Quick Info -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-lightning"></i> Thông tin nhanh
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Loại hình:</span>
+                        <strong>@(Model.Type ?? "Chưa cập nhật")</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Địa điểm:</span>
+                        <strong>@(Model.Location ?? "Chưa cập nhật")</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Thành lập:</span>
+                        <strong>@(Model.EstablishedYear > 0 ? Model.EstablishedYear.ToString() : "Chưa cập nhật")</strong>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <span>Học phí:</span>
+                        <strong class="text-success">
+                            @(Model.TuitionFee.HasValue && Model.TuitionFee > 0 ? Model.TuitionFee.Value.ToString("N0") + " VNĐ" : "Liên hệ")
+                        </strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-compass"></i> Khám phá thêm
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Survey" asp-action="Index" class="btn btn-outline-primary">
+                            <i class="bi bi-clipboard-data"></i> Khảo sát MBTI
+                        </a>
+                        <a asp-controller="Home" asp-action="school-recommendations" class="btn btn-outline-success">
+                            <i class="bi bi-lightbulb"></i> Gợi ý trường học
+                        </a>
+                        <a asp-controller="School" asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Quay lại danh sách
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            @if (!string.IsNullOrEmpty(Model.Website))
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="bi bi-telephone"></i> Liên hệ
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">
+                            <i class="bi bi-globe"></i> 
+                            <a href="@Model.Website" target="_blank">Website chính thức</a>
+                        </p>
+                        <small class="text-muted">
+                            Truy cập website để biết thêm thông tin chi tiết về tuyển sinh, chương trình đào tạo và các hoạt động của trường.
+                        </small>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

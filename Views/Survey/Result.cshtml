@@ -1,0 +1,198 @@
+@model SurveyResult
+@{
+    ViewData["Title"] = $"Kết quả khảo sát: {Model.Result}";
+}
+
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Khảo sát</a></li>
+                <li class="breadcrumb-item active">Kết quả</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-success text-white text-center">
+                <h2 class="mb-0">🎉 Chúc mừng!</h2>
+                <p class="mb-0">Bạn đã hoàn thành khảo sát thành công</p>
+            </div>
+            <div class="card-body text-center">
+                <div class="result-display mb-4">
+                    <h1 class="display-1 text-primary fw-bold">@Model.Result</h1>
+                    <h3 class="text-muted">@Model.Description</h3>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <i class="bi bi-calendar3 text-info fs-1"></i>
+                            <h5>Ngày hoàn thành</h5>
+                            <p class="text-muted">@Model.CompletedDate.ToString("dd/MM/yyyy HH:mm")</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <i class="bi bi-star text-warning fs-1"></i>
+                            <h5>Tổng điểm</h5>
+                            <p class="text-muted">@Model.TotalScore điểm</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <i class="bi bi-clipboard-check text-success fs-1"></i>
+                            <h5>Khảo sát</h5>
+                            <p class="text-muted">@Model.Survey.Title</p>
+                        </div>
+                    </div>
+                </div>
+                
+                @if (Model.Result.Length == 4) // MBTI result
+                {
+                    <div class="mbti-breakdown mb-4">
+                        <h4>Phân tích tính cách MBTI</h4>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="mbti-dimension">
+                                    <h5>@Model.Result[0]</h5>
+                                    <p class="small">@(Model.Result[0] == 'E' ? "Hướng ngoại" : "Hướng nội")</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mbti-dimension">
+                                    <h5>@Model.Result[1]</h5>
+                                    <p class="small">@(Model.Result[1] == 'S' ? "Cảm giác" : "Trực giác")</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mbti-dimension">
+                                    <h5>@Model.Result[2]</h5>
+                                    <p class="small">@(Model.Result[2] == 'T' ? "Tư duy" : "Cảm xúc")</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mbti-dimension">
+                                    <h5>@Model.Result[3]</h5>
+                                    <p class="small">@(Model.Result[3] == 'J' ? "Phán đoán" : "Nhận thức")</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+                <div class="action-buttons">
+                    <a asp-controller="School" asp-action="Recommendations" class="btn btn-primary btn-lg me-2">
+                        <i class="bi bi-building"></i> Xem gợi ý trường học
+                    </a>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                        <i class="bi bi-arrow-left"></i> Làm khảo sát khác
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Chia sẻ kết quả</h5>
+            </div>
+            <div class="card-body">
+                <p>Chia sẻ kết quả khảo sát của bạn với bạn bè:</p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" onclick="shareResult()">
+                        <i class="bi bi-share"></i> Chia sẻ
+                    </button>
+                    <button class="btn btn-success" onclick="downloadResult()">
+                        <i class="bi bi-download"></i> Tải về PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Gợi ý tiếp theo</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a asp-controller="Exam" asp-action="Index" class="text-decoration-none">
+                            <i class="bi bi-pencil-square text-primary"></i> Làm bài kiểm tra
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a asp-controller="School" asp-action="Index" class="text-decoration-none">
+                            <i class="bi bi-building text-success"></i> Khám phá trường học
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a asp-action="MyResults" class="text-decoration-none">
+                            <i class="bi bi-clipboard-data text-info"></i> Xem lịch sử khảo sát
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function shareResult() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Kết quả khảo sát MBTI của tôi',
+                    text: `Tôi vừa hoàn thành khảo sát và có kết quả là @Model.Result - @Model.Description`,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const text = `Tôi vừa hoàn thành khảo sát và có kết quả là @Model.Result - @Model.Description. Xem chi tiết tại: ${window.location.href}`;
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Đã sao chép link chia sẻ vào clipboard!');
+                });
+            }
+        }
+        
+        function downloadResult() {
+            // This would typically generate a PDF
+            alert('Tính năng tải về PDF sẽ được phát triển trong phiên bản tiếp theo.');
+        }
+        
+        // Add some celebration animation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simple confetti effect could be added here
+            console.log('Survey completed successfully!');
+        });
+    </script>
+    
+    <style>
+        .stat-card {
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .mbti-dimension {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+        
+        .mbti-dimension h5 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .result-display h1 {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+}

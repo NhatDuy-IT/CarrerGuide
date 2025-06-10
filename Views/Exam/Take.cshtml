@@ -1,0 +1,159 @@
+@model Exam
+@{
+    ViewData["Title"] = $"Làm bài: {Model.Title}";
+}
+
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Bài kiểm tra</a></li>
+                <li class="breadcrumb-item active">@Model.Title</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">@Model.Title</h4>
+                    <div id="timer" class="badge bg-warning fs-6">
+                        <i class="bi bi-clock"></i> <span id="time-remaining">@Model.Duration:00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form asp-action="Submit" method="post" id="examForm">
+                    <input type="hidden" name="examId" value="@Model.Id" />
+                    
+                    @{
+                        var questionsList = Model.Questions.ToList();
+                    }
+                    @for (int i = 0; i < questionsList.Count; i++)
+                    {
+                        var question = questionsList[i];
+                        <div class="question-container mb-4 p-3 border rounded">
+                            <h5 class="question-title">
+                                Câu @(i + 1): @question.QuestionText
+                                <span class="badge bg-info">@question.Points điểm</span>
+                            </h5>
+                            
+                            <div class="answers mt-3">
+                                @foreach (var answer in question.Answers)
+                                {
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" 
+                                               name="answers[@question.Id]" 
+                                               value="@answer.Id" 
+                                               id="answer_@answer.Id">
+                                        <label class="form-check-label" for="answer_@answer.Id">
+                                            @answer.AnswerText
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success btn-lg" onclick="return confirmSubmit()">
+                            <i class="bi bi-check-circle"></i> Nộp bài
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary btn-lg ms-2">
+                            <i class="bi bi-arrow-left"></i> Quay lại
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card sticky-top">
+            <div class="card-header">
+                <h5 class="mb-0">Thông tin bài thi</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><strong>Tổng số câu:</strong> @Model.TotalQuestions</li>
+                    <li><strong>Thời gian:</strong> @Model.Duration phút</li>
+                    <li><strong>Ngày tạo:</strong> @Model.CreatedDate.ToString("dd/MM/yyyy")</li>
+                </ul>
+                
+                <div class="progress mb-3">
+                    <div class="progress-bar" role="progressbar" style="width: 0%" id="progress-bar">
+                        0%
+                    </div>
+                </div>
+                
+                <div class="alert alert-info">
+                    <small>
+                        <i class="bi bi-info-circle"></i>
+                        Hãy đọc kỹ câu hỏi và chọn đáp án đúng nhất.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Timer functionality
+        let timeRemaining = @Model.Duration * 60; // Convert to seconds
+        
+        function updateTimer() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('time-remaining').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeRemaining <= 0) {
+                alert('Hết thời gian! Bài thi sẽ được nộp tự động.');
+                document.getElementById('examForm').submit();
+                return;
+            }
+            
+            timeRemaining--;
+        }
+        
+        // Update timer every second
+        setInterval(updateTimer, 1000);
+        
+        // Progress tracking
+        function updateProgress() {
+            const totalQuestions = @Model.TotalQuestions;
+            const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
+            const progress = (answeredQuestions / totalQuestions) * 100;
+
+            document.getElementById('progress-bar').style.width = progress + '%';
+            document.getElementById('progress-bar').textContent = Math.round(progress) + '%';
+        }
+
+        // Add event listeners to radio buttons
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', updateProgress);
+        });
+
+        function confirmSubmit() {
+            const totalQuestions = @Model.TotalQuestions;
+            const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
+            
+            if (answeredQuestions < totalQuestions) {
+                return confirm(`Bạn chỉ trả lời ${answeredQuestions}/${totalQuestions} câu hỏi. Bạn có chắc muốn nộp bài?`);
+            }
+            
+            return confirm('Bạn có chắc muốn nộp bài? Sau khi nộp sẽ không thể chỉnh sửa.');
+        }
+        
+        // Prevent accidental page refresh
+        window.addEventListener('beforeunload', function(e) {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+    </script>
+}

@@ -1,0 +1,176 @@
+@model ManageUserRolesViewModel
+@{
+    ViewData["Title"] = "Quản lý vai trò người dùng";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a asp-action="Index" asp-controller="Dashboard">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a asp-action="Index">Quản lý người dùng</a>
+                </li>
+                <li class="breadcrumb-item active">Quản lý vai trò</li>
+            </ol>
+        </nav>
+        
+        <h1 class="fw-bold">
+            <i class="bi bi-person-gear"></i> Quản lý vai trò người dùng
+        </h1>
+        <p class="text-muted">Phân quyền vai trò cho người dùng: <strong>@Model.UserEmail</strong></p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-shield-check"></i> Phân quyền vai trò
+                </h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="ManageRoles" method="post">
+                    <input type="hidden" asp-for="UserId" />
+                    <input type="hidden" asp-for="UserEmail" />
+                    
+                    <div class="mb-4">
+                        <h6>Vai trò hiện tại:</h6>
+                        @if (Model.UserRoles.Any())
+                        {
+                            @foreach (var role in Model.UserRoles)
+                            {
+                                <span class="badge bg-@(role == "Admin" ? "danger" : role == "Moderator" ? "warning" : "primary") me-2">
+                                    <i class="bi bi-shield"></i> @role
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-muted">Chưa có vai trò nào</span>
+                        }
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6>Chọn vai trò mới:</h6>
+                        <div class="row">
+                            @for (int i = 0; i < Model.AllRoles.Count; i++)
+                            {
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" 
+                                               name="SelectedRoles" 
+                                               value="@Model.AllRoles[i]" 
+                                               class="form-check-input"
+                                               id="role_@i"
+                                               @(Model.UserRoles.Contains(Model.AllRoles[i]) ? "checked" : "") />
+                                        <label class="form-check-label" for="role_@i">
+                                            <span class="badge bg-@(Model.AllRoles[i] == "Admin" ? "danger" : Model.AllRoles[i] == "Moderator" ? "warning" : "primary")">
+                                                @Model.AllRoles[i]
+                                            </span>
+                                            <div class="small text-muted mt-1">
+                                                @switch (Model.AllRoles[i])
+                                                {
+                                                    case "Admin":
+                                                        <span>Toàn quyền quản trị hệ thống</span>
+                                                        break;
+                                                    case "Moderator":
+                                                        <span>Quản lý nội dung và người dùng</span>
+                                                        break;
+                                                    case "User":
+                                                        <span>Người dùng thông thường</span>
+                                                        break;
+                                                    default:
+                                                        <span>Vai trò tùy chỉnh</span>
+                                                        break;
+                                                }
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Quay lại
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> Cập nhật vai trò
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-info-circle"></i> Thông tin vai trò
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Admin</strong>
+                    <ul class="small text-muted mt-1">
+                        <li>Quản lý toàn bộ hệ thống</li>
+                        <li>Quản lý người dùng và vai trò</li>
+                        <li>Truy cập Admin Panel</li>
+                        <li>Xem báo cáo và thống kê</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-3">
+                    <strong>Moderator</strong>
+                    <ul class="small text-muted mt-1">
+                        <li>Quản lý nội dung</li>
+                        <li>Kiểm duyệt bài viết</li>
+                        <li>Hỗ trợ người dùng</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-3">
+                    <strong>User</strong>
+                    <ul class="small text-muted mt-1">
+                        <li>Sử dụng các tính năng cơ bản</li>
+                        <li>Làm bài thi và khảo sát</li>
+                        <li>Xem thông tin trường học</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> Lưu ý quan trọng
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <small>
+                        <strong>Cảnh báo:</strong> Việc thay đổi vai trò sẽ ảnh hưởng đến quyền truy cập của người dùng. 
+                        Hãy cân nhắc kỹ trước khi thực hiện.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Confirm before submitting
+        $('form').on('submit', function(e) {
+            if (!confirm('Bạn có chắc muốn thay đổi vai trò cho người dùng này?')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+}

@@ -1,0 +1,102 @@
+@model MyAspNetCoreApp.Models.Exam
+
+@{
+    ViewData["Title"] = "Quản lý câu hỏi";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Quản lý câu hỏi - @Model.Title</h1>
+
+    <div class="mb-3">
+        <a asp-action="AddQuestion" asp-route-id="@Model.Id" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Thêm câu hỏi mới
+        </a>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Quay lại danh sách bài thi
+        </a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-list mr-1"></i>
+            Danh sách câu hỏi
+        </div>
+        <div class="card-body">
+            @if (!Model.Questions.Any())
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Chưa có câu hỏi nào trong bài thi này.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="questionsTable">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Câu hỏi</th>
+                                <th>Loại</th>
+                                <th>Điểm</th>
+                                <th>Số câu trả lời</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var question in Model.Questions.OrderBy(q => q.OrderNumber))
+                            {
+                                <tr>
+                                    <td>@question.OrderNumber</td>
+                                    <td>@question.QuestionText</td>
+                                    <td>
+                                        @switch (question.Type)
+                                        {
+                                            case QuestionType.MultipleChoice:
+                                                <span class="badge badge-primary">Trắc nghiệm</span>
+                                                break;
+                                            case QuestionType.TrueFalse:
+                                                <span class="badge badge-info">Đúng/Sai</span>
+                                                break;
+                                            case QuestionType.Essay:
+                                                <span class="badge badge-warning">Tự luận</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>@question.Points</td>
+                                    <td>@question.Answers.Count</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="#" class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i> Xem
+                                            </a>
+                                            <a href="#" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i> Sửa
+                                            </a>
+                                            <a href="#" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Xóa
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#questionsTable').DataTable({
+                "order": [[0, "asc"]],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Vietnamese.json"
+                }
+            });
+        });
+    </script>
+}
